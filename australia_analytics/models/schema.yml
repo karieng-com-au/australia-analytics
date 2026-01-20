@@ -1,0 +1,41 @@
+version: 2
+
+sources:
+  - name: au_raw_data
+    schema: australia
+    tables:
+      - name: australia_births_deaths
+        description: "Raw birth and death data since 1981 from GCS."
+        external:
+          location: "gs://australia-analytics/population/death-birth.parquet"
+          options:
+            format: PARQUET
+
+      - name: australia_immigration
+        description: "Australia immigration data since 1981 from GCS."
+        external:
+          location: "gs://australia-analytics/population/aus_immigration.parquet"
+          options:
+            format: PARQUET
+
+      - name: australia_population
+        description: "Australia population data since 1981 from GCS."
+        external:
+          location: "gs://australia-analytics/population/aus_population.parquet"
+          options:
+            format: PARQUET
+
+      - name: australia_interstate_migration
+        description: "Australia interstate migration data since 1981 from GCS."
+        external:
+          location: "gs://australia-analytics/population/aus_interstate_migration.parquet"
+          options:
+            format: PARQUET
+
+      - name: australia_age_gender_population
+        description: "Australia age and gender population distribution data since 1981 from GCS."
+        external:
+          location: "gs://australia-analytics/population/aus_gender_population.parquet"
+          options:
+            format: PARQUET
+

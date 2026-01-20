@@ -1,15 +1,8 @@
-Welcome to your new dbt project!
+# australia_analytics
 
-### Using the starter project
-
-Try running the following commands:
-- dbt run
-- dbt test
-
+This is a dbt project for Australia Analytics.
 
 ### Resources:
 - Learn more about dbt [in the docs](https://docs.getdbt.com/docs/introduction)
-- Check out [Discourse](https://discourse.getdbt.com/) for commonly asked questions and answers
-- Join the [chat](https://community.getdbt.com/) on Slack for live discussions and support
-- Find [dbt events](https://events.getdbt.com) near you
-- Check out [the blog](https://blog.getdbt.com/) for the latest news on dbt's development and best practices
+- Check out the [dbt community](http://community.getdbt.com/)
+- Read the [dbt blog](https://blog.getdbt.com/)
