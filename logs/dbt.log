@@ -1,0 +1,56 @@
+[0m12:22:05.237876 [debug] [MainThread]: Got an exception trying to initialize tracking
+
+
+============================== 12:22:05.275236 | 81d4aaa5-730c-4c5e-b8c4-29f7e5c50491 ==============================
+[0m12:22:05.275236 [info ] [MainThread]: Running with dbt=1.11.2
+[0m12:22:05.275946 [debug] [MainThread]: running dbt with arguments {'partial_parse': 'True', 'printer_width': '80', 'send_anonymous_usage_stats': 'True', 'version_check': 'True', 'use_colors': 'True', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'target_path': 'None', 'fail_fast': 'False', 'invocation_command': 'dbt init', 'use_experimental_parser': 'False', 'warn_error': 'None', 'profiles_dir': '/Users/jacktoke/.dbt', 'cache_selected_only': 'False', 'log_cache_events': 'False', 'log_path': 'logs', 'static_parser': 'True', 'introspect': 'True', 'empty': 'None', 'debug': 'False', 'no_print': 'None', 'indirect_selection': 'eager', 'log_format': 'default', 'quiet': 'False', 'write_json': 'True'}
+[0m12:22:22.523963 [debug] [MainThread]: Starter project path: /Users/jacktoke/Codes/DataAnalytics/australia/.venv/lib/python3.12/site-packages/dbt/include/starter_project
+[0m12:22:22.528331 [info ] [MainThread]: 
+Your new dbt project "australia_analytics" was created!
+
+For more information on how to configure the profiles.yml file,
+please consult the dbt documentation here:
+
+  https://docs.getdbt.com/docs/configure-your-profile
+
+One more thing:
+
+Need help? Don't hesitate to reach out to us via GitHub issues or on Slack:
+
+  https://community.getdbt.com/
+
+Happy modeling!
+
+[0m12:22:22.528655 [info ] [MainThread]: Setting up your profile.
+[0m12:25:52.056323 [info ] [MainThread]: Profile australia_analytics written to /Users/jacktoke/.dbt/profiles.yml using target's profile_template.yml and your supplied values. Run 'dbt debug' to validate the connection.
+[0m12:25:52.057063 [debug] [MainThread]: Resource report: {"command_name": "init", "command_success": true, "command_wall_clock_time": 226.84471, "process_in_blocks": "0", "process_kernel_time": 1.779443, "process_mem_max_rss": "416776192", "process_out_blocks": "0", "process_user_time": 7.367852}
+[0m12:25:52.057635 [debug] [MainThread]: Command `dbt init` succeeded at 12:25:52.057557 after 226.85 seconds
+[0m12:25:52.057903 [debug] [MainThread]: Flushing usage events
+[0m12:30:59.598047 [debug] [MainThread]: Got an exception trying to initialize tracking
+
+
+============================== 12:30:59.614484 | 5ee53e7a-01ae-4189-be1e-0bb81fd0ff81 ==============================
+[0m12:30:59.614484 [info ] [MainThread]: Running with dbt=1.11.2
+[0m12:30:59.615089 [debug] [MainThread]: running dbt with arguments {'no_print': 'None', 'introspect': 'True', 'quiet': 'False', 'indirect_selection': 'eager', 'profiles_dir': '/Users/jacktoke/.dbt', 'use_colors': 'True', 'log_format': 'default', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'use_experimental_parser': 'False', 'log_path': 'logs', 'target_path': 'None', 'static_parser': 'True', 'warn_error': 'None', 'version_check': 'True', 'empty': 'False', 'send_anonymous_usage_stats': 'True', 'printer_width': '80', 'log_cache_events': 'False', 'debug': 'False', 'write_json': 'True', 'fail_fast': 'False', 'partial_parse': 'True', 'cache_selected_only': 'False', 'invocation_command': 'dbt run'}
+[0m12:30:59.615442 [error] [MainThread]: Encountered an error:
+Runtime Error
+  No dbt_project.yml found at expected path /Users/jacktoke/Codes/DataAnalytics/australia/dbt_project.yml
+  Verify that each entry within packages.yml (and their transitive dependencies) contains a file named dbt_project.yml
+  
+[0m12:30:59.615864 [debug] [MainThread]: Resource report: {"command_name": "run", "command_success": false, "command_wall_clock_time": 0.045145165, "process_in_blocks": "0", "process_kernel_time": 0.136777, "process_mem_max_rss": "110493696", "process_out_blocks": "0", "process_user_time": 0.677656}
+[0m12:30:59.616167 [debug] [MainThread]: Command `dbt run` failed at 12:30:59.616122 after 0.05 seconds
+[0m12:30:59.616359 [debug] [MainThread]: Flushing usage events
+[0m12:33:04.998216 [debug] [MainThread]: Got an exception trying to initialize tracking
+
+
+============================== 12:33:05.011168 | 5f1febcd-8ed0-4649-9dc7-1881798c3400 ==============================
+[0m12:33:05.011168 [info ] [MainThread]: Running with dbt=1.11.2
+[0m12:33:05.011759 [debug] [MainThread]: running dbt with arguments {'no_print': 'None', 'send_anonymous_usage_stats': 'True', 'partial_parse': 'True', 'empty': 'False', 'log_path': 'logs', 'target_path': 'None', 'profiles_dir': '/Users/jacktoke/.dbt', 'warn_error': 'None', 'log_format': 'default', 'use_experimental_parser': 'False', 'use_colors': 'True', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'introspect': 'True', 'printer_width': '80', 'fail_fast': 'False', 'indirect_selection': 'eager', 'version_check': 'True', 'invocation_command': 'dbt build', 'quiet': 'False', 'static_parser': 'True', 'write_json': 'True', 'log_cache_events': 'False', 'cache_selected_only': 'False', 'debug': 'False'}
+[0m12:33:05.012126 [error] [MainThread]: Encountered an error:
+Runtime Error
+  No dbt_project.yml found at expected path /Users/jacktoke/Codes/DataAnalytics/australia/dbt_project.yml
+  Verify that each entry within packages.yml (and their transitive dependencies) contains a file named dbt_project.yml
+  
+[0m12:33:05.012535 [debug] [MainThread]: Resource report: {"command_name": "build", "command_success": false, "command_wall_clock_time": 0.03783046, "process_in_blocks": "0", "process_kernel_time": 0.107422, "process_mem_max_rss": "108871680", "process_out_blocks": "0", "process_user_time": 0.621497}
+[0m12:33:05.012802 [debug] [MainThread]: Command `dbt build` failed at 12:33:05.012759 after 0.04 seconds
+[0m12:33:05.012975 [debug] [MainThread]: Flushing usage events
