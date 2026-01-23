@@ -10,7 +10,11 @@ dependencies = [
     "fastexcel>=0.18.0",
     "fsspec>=2025.12.0",
     "gcsfs>=2025.12.0",
+    "google-cloud-bigquery>=3.40.0",
     "polars>=1.37.1",
+    "pyarrow>=23.0.0",
     "python-dotenv>=1.2.1",
+    "seaborn>=0.13.2",
+    "statsmodels>=0.14.6",
     "streamlit>=1.53.1",
 ]
