@@ -39,3 +39,10 @@ sources:
           options:
             format: PARQUET
 
+      - name: election_distributions_by_poll_place
+        description: "Australian 2025 election distribution by polling places"
+        external:
+          location: "gs://australia-analytics/election/distribution-by-poll-place.parquet"
+          options:
+            format: PARQUET
+
