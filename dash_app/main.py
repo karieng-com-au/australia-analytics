@@ -1,6 +1,8 @@
-from dash import Dash, html, dcc, page_container, page_registry
+from dash import Dash, html, page_container, page_registry
+import dash_bootstrap_components as dbc
 
-app = Dash(__name__, use_pages=True, pages_folder="pages", suppress_callback_exceptions=True)
+app = Dash(__name__, use_pages=True, pages_folder="pages", suppress_callback_exceptions=True,
+           external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 app.index_string = '''
 <!DOCTYPE html>
@@ -12,12 +14,18 @@ app.index_string = '''
         {%css%}
         <style>
             .nav-link {
-                text-decoration: none;
-                color: teal;
+                color: teal !important;
                 font-weight: 700;
             }
             .nav-link:hover {
-                color: #004d4d;
+                color: #004d4d !important;
+            }
+            .dropdown-item {
+                color: teal !important;
+                font-weight: 700;
+            }
+            .dropdown-item:hover {
+                color: #004d4d !important;
             }
         </style>
     </head>
@@ -32,29 +40,46 @@ app.index_string = '''
 </html>
 '''
 
+navbar = html.Div(
+    html.Div([
+        # Left: logo
+        html.Div(
+            html.A(
+                html.Img(src="/assets/grampians-logo.png", style={"height": "40px"}),
+                href="/",
+            ),
+            style={"flex": "1"},
+        ),
+        # Center: nav links
+        html.Div(
+            dbc.Nav([
+                dbc.NavItem(dbc.NavLink("Home", href="/")),
+                dbc.DropdownMenu(
+                    [
+                        dbc.DropdownMenuItem("Election Analysis", href="/election"),
+                        dbc.DropdownMenuItem("Immigration Analysis", href="/immigration"),
+                    ],
+                    label="Articles",
+                    nav=True,
+                    in_navbar=True,
+                ),
+            ]),
+            style={"flex": "1", "display": "flex", "justifyContent": "center"},
+        ),
+        # Right: spacer to balance logo
+        html.Div(style={"flex": "1"}),
+    ], style={
+        "display": "flex",
+        "alignItems": "center",
+        "maxWidth": "75%",
+        "margin": "0 auto",
+        "padding": "10px 0",
+    }),
+    style={"backgroundColor": "#f8f9fa", "borderBottom": "1px solid #dee2e6"},
+)
+
 app.layout = html.Div([
-    html.Nav(
-        html.Div([
-            html.Img(
-                src="/assets/grampians-logo.png",
-                style={"height": "40px", "flex": "0 0 auto"}
-            ),
-            html.Ul(
-                [
-                    html.Li(
-                        dcc.Link(page["name"], href=page["path"], className="nav-link"),
-                        style={"display": "inline", "marginRight": "20px"}
-                    )
-                    for page in page_registry.values()
-                ],
-                style={"listStyle": "none", "display": "flex", "margin": "0", "padding": "0",
-                        "flex": "1 1 auto", "justifyContent": "center"}
-            ),
-            # Spacer to balance the logo so links stay truly centered
-            html.Div(style={"width": "120px", "flex": "0 0 auto"}),
-        ], style={"display": "flex", "alignItems": "center", "maxWidth": "75%", "margin": "0 auto", "padding": "10px 0"}),
-        style={"backgroundColor": "#f8f9fa", "borderBottom": "1px solid #dee2e6"}
-    ),
+    navbar,
     html.Div(page_container, style={"maxWidth": "75%", "margin": "0 auto", "padding": "20px 0"})
 ])
 
