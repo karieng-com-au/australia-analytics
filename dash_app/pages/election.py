@@ -45,10 +45,6 @@ def get_election_result_summary():
     return client.query(sql).to_dataframe()
 
 
-election_result_df = get_election_results()
-first_preferences = get_first_preferences()
-election_result_summary = get_election_result_summary()
-
 # Normalise party names so colours are consistent across all states
 party_name_map = {
     "Labor": "Australian Labor Party",
@@ -67,9 +63,7 @@ def normalise_party(name):
             return canonical
     return name
 
-election_result_df["PartyNm"] = election_result_df["PartyNm"].apply(normalise_party)
 
-# Load GeoJSON
 def load_geojson():
     local_path = os.path.join(os.path.dirname(__file__), "..", "election_map", "cec_districts_map.geojson")
     if os.path.exists(local_path):
@@ -80,7 +74,17 @@ def load_geojson():
     blob = storage.Client(credentials=credentials, project=project_id).bucket(bucket_name).blob(blob_path)
     return json.loads(blob.download_as_text())
 
-geojson_data = load_geojson()
+
+@lru_cache(maxsize=1)
+def load_all_data():
+    """Lazy-load all data on first request so gunicorn can start immediately."""
+    election_result_df = get_election_results()
+    first_preferences = get_first_preferences()
+    election_result_summary = get_election_result_summary()
+    election_result_df["PartyNm"] = election_result_df["PartyNm"].apply(normalise_party)
+    geojson_data = load_geojson()
+    return election_result_df, first_preferences, election_result_summary, geojson_data
+
 
 # Define party colors (adjust party names to match your data)
 party_colors = {
@@ -94,8 +98,6 @@ party_colors = {
     "Centre Alliance": "#FF6300",
 }
 
-states = sorted(election_result_df["StateAb"].unique())
-
 state_centers = {
     "NSW": {"lat": -32.0, "lon": 147.0, "zoom": 5},
     "VIC": {"lat": -37.0, "lon": 144.5, "zoom": 6},
@@ -107,24 +109,28 @@ state_centers = {
     "ACT": {"lat": -35.5, "lon": 149.0, "zoom": 9},
 }
 
-layout = html.Div([
-    html.H2(children="Australian Election (2025)"),
-    html.P("Labor has retained government in the 2025 federal election, with Anthony Albanese securing a second term as Prime Minister. But what does the data reveal about how Australians voted? In this analysis, we dig into the results to identify patterns across electorates. Explore the interactive map below to see which party won each seat — select a state from the dropdown to focus on the region that interests you."),
-    html.Label("Select State:"),
-    dcc.Dropdown(
-        id="state-dropdown",
-        options=[{"label": s, "value": s} for s in states],
-        value=states[0] if states else None,
-        clearable=False
-    ),
-    dcc.Graph(id="election-map", style={'height': '700px'}),
-    html.P("Labor's landslide victory is starkly evident in the seat distribution. With 98 seats, the ALP holds a comfortable majority well beyond the 75 needed to govern. The combined Coalition forces — LNP (15), Liberal Party (11) and Nationals (9) — managed only 35 seats, representing a historically weak result for the centre-right. Notably, Independents secured 14 seats, continuing the trend of voters turning away from major parties in favour of local, issue-focused candidates. The Greens, despite their prominence in public discourse, won just one seat, suggesting their support remains geographically concentrated."),
-    html.H2(children="How Preferential Voting Shaped the Result"),
-    exploration(),
-    first_preference_result(first_preferences),
-    analysis(),
-    lollipop_charts_election_result(election_result_summary)
-])
+
+def layout():
+    election_result_df, first_preferences, election_result_summary, _ = load_all_data()
+    states = sorted(election_result_df["StateAb"].unique())
+    return html.Div([
+        html.H2(children="Australian Election (2025)"),
+        html.P("Labor has retained government in the 2025 federal election, with Anthony Albanese securing a second term as Prime Minister. But what does the data reveal about how Australians voted? In this analysis, we dig into the results to identify patterns across electorates. Explore the interactive map below to see which party won each seat — select a state from the dropdown to focus on the region that interests you."),
+        html.Label("Select State:"),
+        dcc.Dropdown(
+            id="state-dropdown",
+            options=[{"label": s, "value": s} for s in states],
+            value=states[0] if states else None,
+            clearable=False
+        ),
+        dcc.Graph(id="election-map", style={'height': '700px'}),
+        html.P("Labor's landslide victory is starkly evident in the seat distribution. With 98 seats, the ALP holds a comfortable majority well beyond the 75 needed to govern. The combined Coalition forces — LNP (15), Liberal Party (11) and Nationals (9) — managed only 35 seats, representing a historically weak result for the centre-right. Notably, Independents secured 14 seats, continuing the trend of voters turning away from major parties in favour of local, issue-focused candidates. The Greens, despite their prominence in public discourse, won just one seat, suggesting their support remains geographically concentrated."),
+        html.H2(children="How Preferential Voting Shaped the Result"),
+        exploration(),
+        first_preference_result(first_preferences),
+        analysis(),
+        lollipop_charts_election_result(election_result_summary)
+    ])
 
 
 @callback(
@@ -132,6 +138,8 @@ layout = html.Div([
     Input("state-dropdown", "value")
 )
 def update_map(selected_state):
+    election_result_df, _, _, geojson_data = load_all_data()
+
     # Filter election data by state
     filtered_df = election_result_df[election_result_df["StateAb"] == selected_state]
 
