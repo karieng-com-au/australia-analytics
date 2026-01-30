@@ -3,7 +3,8 @@ from dash import html, dcc, callback, Output, Input
 import plotly.express as px
 from dotenv import load_dotenv
 import os
-from google.cloud import bigquery
+from functools import lru_cache
+from google.cloud import bigquery, storage
 from google.oauth2 import service_account
 import json
 from election_exploration import exploration, analysis, first_preference_result, lollipop_charts_election_result
@@ -12,38 +13,80 @@ dash.register_page(__name__, path="/election", name="Election Analysis")
 
 load_dotenv()
 
-sql_query = """
-SELECT * FROM `australia.au_first_count_results_mart` WHERE Victorious = 'Y'
-"""
-
-first_preference_sql = """
-SELECT * FROM `australia.au_first_preference_results_mart`;
-"""
-
-election_result_summary_sql = """SELECT * FROM `australia.au_election_result_summary`;"""
-
-project_id = os.getenv("GOOGLE_PROJECT_ID")
 credential_file = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
-credentials = service_account.Credentials.from_service_account_file(credential_file)
+if credential_file and os.path.exists(credential_file):
+    credentials = service_account.Credentials.from_service_account_file(credential_file)
+    project_id = os.getenv("GOOGLE_PROJECT_ID")
+else:
+    import google.auth
+    credentials, project_id = google.auth.default()
 
 client = bigquery.Client(credentials=credentials, project=project_id)
 
-election_result_df = client.query(sql_query).to_dataframe()
-first_preferences = client.query(first_preference_sql).to_dataframe()
-election_result_summary = client.query(election_result_summary_sql).to_dataframe()
+
+@lru_cache(maxsize=1)
+def get_election_results():
+    sql = "SELECT * FROM `australia.au_first_count_results_mart` WHERE Victorious = 'Y'"
+    return client.query(sql).to_dataframe()
+
+
+@lru_cache(maxsize=1)
+def get_first_preferences():
+    sql = "SELECT * FROM `australia.au_first_preference_results_mart`"
+    return client.query(sql).to_dataframe()
+
+
+@lru_cache(maxsize=1)
+def get_election_result_summary():
+    sql = "SELECT * FROM `australia.au_election_result_summary`"
+    return client.query(sql).to_dataframe()
+
+
+election_result_df = get_election_results()
+first_preferences = get_first_preferences()
+election_result_summary = get_election_result_summary()
+
+# Normalise party names so colours are consistent across all states
+party_name_map = {
+    "Labor": "Australian Labor Party",
+    "Liberal National": "Liberal National Party of Queensland",
+    "Liberal": "Liberal Party of Australia",
+    "National": "National Party of Australia",
+    "Greens": "Australian Greens",
+    "Independent": "Independent",
+    "Katter": "Katter's Australian Party",
+    "Centre Alliance": "Centre Alliance",
+}
+
+def normalise_party(name):
+    for keyword, canonical in party_name_map.items():
+        if keyword in name:
+            return canonical
+    return name
+
+election_result_df["PartyNm"] = election_result_df["PartyNm"].apply(normalise_party)
 
 # Load GeoJSON
-with open("dash_app/election_map/cec_districts_map.geojson", "r") as f:
-    geojson_data = json.load(f)
+def load_geojson():
+    local_path = os.path.join(os.path.dirname(__file__), "..", "election_map", "cec_districts_map.geojson")
+    if os.path.exists(local_path):
+        with open(local_path) as f:
+            return json.load(f)
+    bucket_name = os.getenv("GCS_BUCKET", "toke-analytics-data")
+    blob_path = os.getenv("GCS_GEOJSON_PATH", "election_map/cec_districts_map.geojson")
+    blob = storage.Client(credentials=credentials, project=project_id).bucket(bucket_name).blob(blob_path)
+    return json.loads(blob.download_as_text())
+
+geojson_data = load_geojson()
 
 # Define party colors (adjust party names to match your data)
 party_colors = {
     "Australian Labor Party": "#DE3533",
-    "Liberal Party of Australia": "#0047AB",
+    "Liberal Party of Australia": "#1E90FF",
     "Liberal National Party of Queensland": "#0047AB",
-    "National Party of Australia": "#006644",
+    "National Party of Australia": "#4169E1",
     "Australian Greens": "#10C25B",
-    "Independent": "#808080",
+    "Independent": "teal",
     "Katter's Australian Party": "#8B0000",
     "Centre Alliance": "#FF6300",
 }
@@ -62,7 +105,8 @@ state_centers = {
 }
 
 layout = html.Div([
-    html.H2(children="Australian Election (2025)", style={"textAlign": "center"}),
+    html.H2(children="Australian Election (2025)"),
+    html.P("Labor has retained government in the 2025 federal election, with Anthony Albanese securing a second term as Prime Minister. But what does the data reveal about how Australians voted? In this analysis, we dig into the results to identify patterns across electorates. Explore the interactive map below to see which party won each seat — select a state from the dropdown to focus on the region that interests you."),
     html.Label("Select State:"),
     dcc.Dropdown(
         id="state-dropdown",
@@ -71,11 +115,12 @@ layout = html.Div([
         clearable=False
     ),
     dcc.Graph(id="election-map", style={'height': '700px'}),
-    html.H2(children="Election Data Exploration"),
-    lollipop_charts_election_result(election_result_summary),
+    html.P("Labor's landslide victory is starkly evident in the seat distribution. With 98 seats, the ALP holds a comfortable majority well beyond the 75 needed to govern. The combined Coalition forces — LNP (15), Liberal Party (11) and Nationals (9) — managed only 35 seats, representing a historically weak result for the centre-right. Notably, Independents secured 14 seats, continuing the trend of voters turning away from major parties in favour of local, issue-focused candidates. The Greens, despite their prominence in public discourse, won just one seat, suggesting their support remains geographically concentrated."),
+    html.H2(children="How Preferential Voting Shaped the Result"),
     exploration(),
     first_preference_result(first_preferences),
-    analysis()
+    analysis(),
+    lollipop_charts_election_result(election_result_summary)
 ])
 
 

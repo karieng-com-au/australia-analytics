@@ -10,9 +10,7 @@ def analysis():
     return dcc.Markdown("""
 In the last House of Representatives election in 2025, the Australian Labor Party (ALP) received the most first preferences in 86 electorates. It went on to lose only 5 of those. That means in 17 electorates where the ALP wasn't people's first preference, it went on to win because preferential voting worked in its favour—especially preferences flowing from the Australian Greens and other parties that are philosophically more aligned with it.
 
-In contrast, the Coalition—comprising the Liberal Party, the Nationals, the Liberal National Party (Queensland), and the Country Liberal Party (NT)—received the highest first preference count in 56 electorates. However, it could only hold 33 of them, as preferential voting worked against it. That's an astounding 41 percent of its leading positions lost to vote transfers.
-
-Perhaps the Coalition parties should invest more resources in educating their voters on how to vote so that the preferential voting system works in their favour—assuming that's even legal.
+In contrast, the Coalition-comprising the Liberal Party, the Nationals, the Liberal National Party (Queensland), and the Country Liberal Party (NT) - received the highest first preference count in 56 electorates. However, it could only hold 33 of them, as preferential voting worked against it. That's an astounding 41 percent of its leading positions lost to vote transfers.
 """)
 
 
@@ -24,7 +22,7 @@ def first_preference_result(dataframe):
         figure={
             "data": [
                 {"x": winners["PartyAb"], "y": winners["Counts"], "type": "bar", "name": "Won", "text": winners["Counts"], "textposition": "outside"},
-                {"x": losers["PartyAb"], "y": losers["Counts"], "type": "bar", "name": "lost", "text": losers["Counts"], "textposition": "outside"}
+                {"x": losers["PartyAb"], "y": losers["Counts"], "type": "bar", "name": "Lost", "text": losers["Counts"], "textposition": "outside"}
             ],
             "layout": {
                 "title": {
@@ -79,6 +77,23 @@ def lollipop_charts_election_result(dataframe):
             textfont=dict(size=11),
             showlegend=False,
         ))
+
+    # Majority line at 75 seats
+    fig.add_vline(
+        x=75,
+        line_width=2,
+        line_dash="dash",
+        line_color="grey",
+    )
+    fig.add_annotation(
+        x=75,
+        y=1.05,
+        yref="paper",
+        text="75 — Majority required to form government",
+        showarrow=False,
+        font=dict(size=11, color="grey"),
+        xanchor="left",
+    )
 
     fig.update_layout(
         title={

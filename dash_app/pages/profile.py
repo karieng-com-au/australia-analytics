@@ -35,7 +35,16 @@ layout = html.Div([
     * **Mobile Development**: Native Android (Kotlin Compose)
     """),
     html.Hr(),
+    html.H3("EDUCATION & TRAININGS"),
     dbc.Row([
+        dbc.Col(dbc.Card([
+            dbc.CardImg(src="assets/unisq-logo.jpg", style={"height": "200px", "objectFit": "contain", "objectPosition": "center", "backgroundColor": "#f8f9fa", "padding": "10px"}),
+            dbc.CardBody([
+                html.H5("Master of AI & ML"),
+                html.H6("Southern Queensland University"),
+                html.P("JUL 2025 - PRESENT")
+            ]),
+        ], className="h-100"), md=4),
         dbc.Col(dbc.Card([
             dbc.CardImg(src="assets/qut-logo-og-1200.jpg", style={"height": "200px", "objectFit": "contain", "objectPosition": "center", "backgroundColor": "#f8f9fa", "padding": "10px"}),
             dbc.CardBody([
@@ -52,6 +61,9 @@ layout = html.Div([
                 html.P("MAR 2025 - JUN 2025")
             ]),
         ], className="h-100"), md=4),
+
+    ], className="g-3 mb-3"),
+    dbc.Row([
         dbc.Col(dbc.Card([
             dbc.CardImg(src="assets/RMIT-Logo.jpg", style={"height": "200px", "objectFit": "contain", "objectPosition": "center", "backgroundColor": "#f8f9fa", "padding": "10px"}),
             dbc.CardBody([
@@ -60,8 +72,6 @@ layout = html.Div([
                 html.P("MAR 2025 - APR 2025")
             ]),
         ], className="h-100"), md=4),
-    ], className="g-3 mb-3"),
-    dbc.Row([
         dbc.Col(dbc.Card([
             dbc.CardImg(src="assets/coder-academy.png", style={"height": "200px", "objectFit": "contain", "objectPosition": "center", "backgroundColor": "#f8f9fa", "padding": "10px"}),
             dbc.CardBody([
