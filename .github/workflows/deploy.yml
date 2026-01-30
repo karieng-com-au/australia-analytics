@@ -48,4 +48,8 @@ jobs:
             --region ${{ env.REGION }} \
             --platform managed \
             --allow-unauthenticated \
-            --set-env-vars "GCS_BUCKET=toke-analytics-data,GCS_GEOJSON_PATH=election_map/cec_districts_map.geojson"
+            --set-env-vars "GCS_BUCKET=toke-analytics-data,GCS_GEOJSON_PATH=election_map/cec_districts_map.geojson" \
+            --memory 512Mi \
+            --cpu 1 \
+            --timeout 300 \
+            --concurrency 80

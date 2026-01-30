@@ -14,4 +14,4 @@ COPY dash_app/ dash_app/
 
 ENV PORT=8080
 
-CMD gunicorn dash_app.main:server --bind 0.0.0.0:$PORT
+CMD gunicorn dash_app.main:server --bind 0.0.0.0:$PORT --timeout 120
