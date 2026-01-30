@@ -15,11 +15,12 @@ app.index_string = '''
         {%css%}
         <style>
             .nav-link, .dropdown-item {
-                color: #2d6a4f !important;
+                color: #167d7f !important;
                 font-weight: 700;
             }
             .nav-link:hover, .dropdown-item:hover {
-                color: #1b4332 !important;
+                color: #0F5657 !important;
+                background-color: transparent !important;
             }
         </style>
         <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>

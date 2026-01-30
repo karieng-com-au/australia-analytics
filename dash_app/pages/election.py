@@ -7,7 +7,10 @@ from functools import lru_cache
 from google.cloud import bigquery, storage
 from google.oauth2 import service_account
 import json
-from dash_app.election_exploration import exploration, analysis, first_preference_result, lollipop_charts_election_result
+try:
+    from dash_app.election_exploration import exploration, analysis, first_preference_result, lollipop_charts_election_result
+except ModuleNotFoundError:
+    from election_exploration import exploration, analysis, first_preference_result, lollipop_charts_election_result
 
 dash.register_page(__name__, path="/election", name="Election Analysis")
 

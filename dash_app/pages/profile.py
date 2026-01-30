@@ -6,9 +6,15 @@ from dash import html, dcc
 dash.register_page(__name__, path="/", name="Profile")
 
 layout = html.Div([
-    html.H2("Jack Toke"),
-    html.H4("Data/Analytics Engineer - Software Engineer"),
-    html.P("IT professional with two years' experience in software development and formal qualifications in data engineering and analytics. Track record of building solutions that enhance efficiency and deliver measurable cost savings. Looking to contribute technical and analytical capabilities as a Data/Analytics Engineer."),
+    dbc.Row([
+        dbc.Col(dbc.CardImg(src="assets/black-n-white.png", style={"width": "200px", "height": "200px", "objectFit": "cover", "objectPosition": "center"}),
+                width="auto", style={"padding": "10px", "backgroundColor": "#acc196"}),
+        dbc.Col([
+           html.H2("Jack Toke"),
+            html.H4("Data/Analytics Engineer - Software Engineer"),
+            html.P("IT professional with two years' experience in software development and formal qualifications in data engineering and analytics. Track record of building solutions that enhance efficiency and deliver measurable cost savings. Looking to contribute technical and analytical capabilities as a Data/Analytics Engineer."),
+        ])
+        ]),
     html.Hr(),
     dcc.Markdown("""
     ### SKILLS
