@@ -51,7 +51,6 @@ navbar = html.Div(
         html.Div(
             dbc.Nav([
                 dbc.NavItem(dbc.NavLink("Home", href="/")),
-                dbc.NavItem(dbc.NavLink("Contact", href="/contact")),
                 dbc.DropdownMenu(
                     [
                         dbc.DropdownMenuItem("Election Analysis", href="/election"),
@@ -61,6 +60,7 @@ navbar = html.Div(
                     nav=True,
                     in_navbar=True,
                 ),
+                dbc.NavItem(dbc.NavLink("Contact", href="/contact")),
             ]),
             style={"flex": "1", "display": "flex", "justifyContent": "center"},
         ),
