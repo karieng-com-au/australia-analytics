@@ -76,10 +76,33 @@ navbar = html.Div(
     className="bg-light border-bottom",
 )
 
+footer = html.Div(
+    html.Div([
+        html.Div([
+            html.Span("2026 Grampians AI. All rights reserved.", style={"color": "#167d7f", "fontWeight": "500"}),
+        ], style={"flex": "1"}),
+        html.Div([
+            html.A("LinkedIn", href="https://www.linkedin.com/in/jackptoke/", target="_blank",
+                   style={"color": "#167d7f", "fontWeight": "700", "textDecoration": "none", "marginRight": "20px"}),
+            html.A("GitHub", href="https://github.com/karieng-com-au", target="_blank",
+                   style={"color": "#167d7f", "fontWeight": "700", "textDecoration": "none"}),
+        ]),
+    ], style={
+        "display": "flex",
+        "alignItems": "center",
+        "justifyContent": "space-between",
+        "maxWidth": "75%",
+        "margin": "0 auto",
+        "padding": "15px 0",
+    }),
+    className="bg-light border-top",
+)
+
 app.layout = html.Div([
     navbar,
-    html.Div(page_container, style={"maxWidth": "75%", "margin": "0 auto", "padding": "20px 0"})
-])
+    html.Div(page_container, style={"maxWidth": "75%", "margin": "0 auto", "padding": "20px 0", "flex": "1"}),
+    footer,
+], style={"display": "flex", "flexDirection": "column", "minHeight": "100vh"})
 
 server = app.server
 
