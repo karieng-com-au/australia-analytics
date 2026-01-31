@@ -56,7 +56,7 @@ layout = html.Div([
             dbc.CardBody([
                 html.H5("Graduate Certificate IT (Data Analytics)"),
                 html.H6("Queensland University of Technology"),
-                html.P("MAR 2025 - December 2025")
+                html.P("MAR 2025 - DEC 2025")
             ]),
         ], className="h-100"), md=4),
         dbc.Col(dbc.Card([

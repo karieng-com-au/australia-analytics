@@ -42,7 +42,7 @@ navbar = html.Div(
         # Left: logo
         html.Div(
             html.A(
-                html.Img(src="/assets/grampians-logo.png", style={"height": "40px"}),
+                html.Img(src="/assets/grampians-logo-new-2026.png", style={"height": "60px"}),
                 href="/",
             ),
             style={"flex": "1"},
@@ -60,7 +60,7 @@ navbar = html.Div(
                     nav=True,
                     in_navbar=True,
                 ),
-                dbc.NavItem(dbc.NavLink("Contact", href="/contact")),
+                dbc.NavItem(dbc.NavLink("Hire me", href="/contact")),
             ]),
             style={"flex": "1", "display": "flex", "justifyContent": "center"},
         ),
