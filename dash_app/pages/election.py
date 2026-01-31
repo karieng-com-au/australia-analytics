@@ -30,19 +30,19 @@ client = bigquery.Client(credentials=credentials, project=project_id)
 @lru_cache(maxsize=1)
 def get_election_results():
     sql = "SELECT * FROM `australia.au_first_count_results_mart` WHERE Victorious = 'Y'"
-    return client.query(sql).to_dataframe()
+    return client.query(sql).result().to_dataframe()
 
 
 @lru_cache(maxsize=1)
 def get_first_preferences():
     sql = "SELECT * FROM `australia.au_first_preference_results_mart`"
-    return client.query(sql).to_dataframe()
+    return client.query(sql).result().to_dataframe()
 
 
 @lru_cache(maxsize=1)
 def get_election_result_summary():
     sql = "SELECT * FROM `australia.au_election_result_summary`"
-    return client.query(sql).to_dataframe()
+    return client.query(sql).result().to_dataframe()
 
 
 # Normalise party names so colours are consistent across all states

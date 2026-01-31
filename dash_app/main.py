@@ -1,5 +1,5 @@
 import os
-from dash import Dash, html, page_container, page_registry
+from dash import Dash, dcc, html, page_container, page_registry
 import dash_bootstrap_components as dbc
 
 app = Dash(__name__, use_pages=True, pages_folder="pages", suppress_callback_exceptions=True,
@@ -21,6 +21,12 @@ app.index_string = '''
             .nav-link:hover, .dropdown-item:hover {
                 color: #0F5657 !important;
                 background-color: transparent !important;
+            }
+            .dash-spinner {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
             }
         </style>
         <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
@@ -100,7 +106,10 @@ footer = html.Div(
 
 app.layout = html.Div([
     navbar,
-    html.Div(page_container, style={"maxWidth": "75%", "margin": "0 auto", "padding": "20px 0", "flex": "1"}),
+    html.Div(
+        dcc.Loading(page_container, type="circle", color="#167d7f"),
+        style={"maxWidth": "75%", "margin": "0 auto", "padding": "20px 0", "flex": "1"},
+    ),
     footer,
 ], style={"display": "flex", "flexDirection": "column", "minHeight": "100vh"})
 

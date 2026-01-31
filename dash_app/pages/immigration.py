@@ -56,19 +56,22 @@ def layout():
     ])
 
 @lru_cache(maxsize=1)
+def get_population_data():
+    """Single query to fetch all population data."""
+    sql = "SELECT year, births, deaths, net_migration FROM `australia.au_population_mart` ORDER BY year"
+    return client.query(sql).result().to_dataframe()
+
 def get_births_deaths_data():
-    sql = "SELECT year, births, deaths FROM `australia.au_population_mart` WHERE year >= 2012"
-    return client.query(sql).to_dataframe()
+    df = get_population_data()
+    return df.loc[df["year"] >= 2012, ["year", "births", "deaths"]].reset_index(drop=True)
 
-@lru_cache(maxsize=1)
 def get_net_immigration_data():
-    sql = "SELECT year, net_migration FROM `australia.au_population_mart`"
-    return client.query(sql).to_dataframe()
+    df = get_population_data()
+    return df[["year", "net_migration"]].dropna(subset=["net_migration"]).reset_index(drop=True)
 
-@lru_cache(maxsize=1)
 def get_births_deaths_data_2000():
-    sql = "SELECT year, births, deaths FROM `australia.au_population_mart` WHERE year >= 2000"
-    return client.query(sql).to_dataframe()
+    df = get_population_data()
+    return df.loc[df["year"] >= 2000, ["year", "births", "deaths"]].reset_index(drop=True)
 
 def scatter_graph():
     births_n_deaths_df = get_births_deaths_data()
