@@ -29,7 +29,9 @@ app.index_string = '''
                 transform: translate(-50%, -50%);
             }
         </style>
-        <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"
+                integrity="sha384-SALc35EccAf6RzGw4iNsyj7kTPr33K7RoGzYu+7heZhT8s0GZouafRiCg1qy44AS"
+                crossorigin="anonymous"></script>
         <script>emailjs.init("jKaPfNa0AwNE4oV_f");</script>
     </head>
     <body>
@@ -115,5 +117,18 @@ app.layout = html.Div([
 
 server = app.server
 
+
+@server.after_request
+def set_security_headers(response):
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "SAMEORIGIN"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    response.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()"
+    if os.environ.get("HTTPS_ENABLED", "false").lower() == "true":
+        response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+    return response
+
+
 if __name__ == '__main__':
-    app.run(debug=True, port=int(os.environ.get("PORT", 8050)))
+    app.run(debug=os.environ.get("DASH_DEBUG", "false").lower() == "true",
+            port=int(os.environ.get("PORT", 8050)))

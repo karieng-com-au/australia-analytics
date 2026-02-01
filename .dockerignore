@@ -4,5 +4,11 @@ __pycache__
 raw_data/
 australia_analytics/
 .git
+.github/
 *.geojson
+*.ipynb
+*.md
 uv.lock
+Dockerfile
+.dockerignore
+.gitignore

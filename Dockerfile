@@ -12,6 +12,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY dash_app/ dash_app/
 
+RUN useradd -m appuser
+USER appuser
+
 ENV PORT=8080
 
 CMD gunicorn dash_app.main:server --bind 0.0.0.0:$PORT --timeout 120
