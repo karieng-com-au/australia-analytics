@@ -68,9 +68,10 @@ navbar = html.Div(
                     nav=True,
                     in_navbar=True,
                 ),
+                dbc.NavItem(dbc.NavLink("Services", href="/services")),
                 dbc.NavItem(dbc.NavLink("Hire me", href="/contact")),
-            ]),
-            style={"flex": "1", "display": "flex", "justifyContent": "center"},
+            ], className="flex-nowrap"),
+            style={"flex": "1", "display": "flex", "justifyContent": "center", "whiteSpace": "nowrap"},
         ),
         # Right: spacer to balance logo
         html.Div(style={"flex": "1"}),
@@ -130,5 +131,5 @@ def set_security_headers(response):
 
 
 if __name__ == '__main__':
-    app.run(debug=os.environ.get("DASH_DEBUG", "false").lower() == "true",
+    app.run(debug=os.environ.get("DASH_DEBUG", "true").lower() == "true",
             port=int(os.environ.get("PORT", 8050)))

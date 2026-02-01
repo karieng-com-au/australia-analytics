@@ -27,31 +27,71 @@ client = bigquery.Client(credentials=credentials, project=project_id)
 def layout():
     return html.Div([
         html.H2("Australia's Silver Tsunami: The Demographic Case for Immigration"),
-        html.P("Immigration remains a contentious political issue in Australia. But what does the data actually say? Examining Australian Bureau of Statistics figures reveals demographic trends that frame immigration not as a political choice, but as an economic necessity."),
+        html.P("Immigration remains a contentious political issue in Australia. But what does the data actually say? "
+               "Examining the Australian Bureau of Statistics figures reveals demographic trends that frame immigration "
+               "not as a political choice, but as an economic necessity."),
 
         html.H3("The Demographic Crossover"),
         dcc.Graph(figure=scatter_graph(), style={'height': '700px'}),
-        html.P("Since 2012, Australia's birth rate has declined by approximately 1,525 births annually, while deaths have increased by roughly 3,375 per year. The graph projects a critical inflection point around 2040, when deaths are forecast to exceed births for the first time in modern Australian history. Beyond this crossover, Australia will experience natural population decline—where deaths outpace births—making immigration essential for any population growth. The full force of the 'Silver Tsunami' accelerates through the 2040s, when the aging population will place unprecedented strain on healthcare, aged care, and social services while the working-age population shrinks relative to retirees."),
-        html.P("It is worth noting that this projection extrapolates 25 years from roughly 13 data points. The widening confidence intervals reflect this uncertainty. However, the underlying trend—declining births and rising deaths—is consistent with patterns observed across comparable developed nations."),
+        html.P("Since 2012, Australia's birth rate has declined by approximately 1,525 births annually, while deaths "
+               "have increased by roughly 3,375 per year. The graph projects a critical inflection point around 2040, "
+               "when deaths are forecast to exceed births for the first time in modern Australian history. Beyond this "
+               "crossover, Australia will experience natural population decline—where deaths outpace births—making "
+               "immigration essential for any population growth. The full force of the 'Silver Tsunami' accelerates "
+               "through the 2040s, when the aging population will place unprecedented strain on healthcare, aged care, "
+               "and social services while the working-age population shrinks relative to retirees."),
+        html.P("It is worth noting that this projection extrapolates 25 years from roughly 13 data points. The widening "
+               "confidence intervals reflect this uncertainty. However, the underlying trend—declining births and rising "
+               "deaths—is consistent with patterns observed across comparable developed nations."),
 
         html.H3("Net Migration Trends"),
         dcc.Graph(figure=net_migration_lollipop_horizontal(), style={'height': '400px'}),
-        html.P("The government's target of 239,000 net migrants annually appears designed to offset this demographic shift. The elevated migration figures of 438,000 (2022), 531,000 (2023), and 330,000 (2024) represent a correction following pandemic-era border closures in 2020-2021, when migration nearly ceased. These elevated numbers suggest the government is attempting to build demographic resilience ahead of the projected crossover point."),
+        html.P("The government's target of 239,000 net migrants annually appears designed to offset this demographic shift. "
+               "The elevated migration figures of 438,000 (2022), 531,000 (2023), and 330,000 (2024) represent a "
+               "correction following pandemic-era border closures in 2020-2021, when migration nearly ceased. "
+               "These elevated numbers suggest the government is attempting to build demographic resilience ahead of "
+               "the projected crossover point."),
 
         html.H3("Immigration and Birth Rates: Is There a Link?"),
-        html.P(["Interestingly, birth rates remained stable—even slightly increasing by approximately 15,000 in 2021—during the period of lowest immigration. ", html.B("This suggests that births are driven primarily by existing citizens and permanent residents rather than recent arrivals, raising a critical question: what pronatalist policies might encourage higher birth rates among the established population?")]),
+        html.P(["Interestingly, birth rates remained stable—even slightly increasing by approximately 15,000 in "
+                "2021—during the period of lowest immigration. ",
+                html.B("This suggests that births are driven primarily by existing citizens and permanent residents "
+                       "rather than recent arrivals, raising a critical question: what pronatalist policies might "
+                       "encourage higher birth rates among the established population?")]),
 
         html.H3("Did the Baby Bonus Work?"),
         dcc.Graph(figure=scatter_graph_no_projection(), style={'height': '600px'}),
-        html.P("Australia has experimented with pronatalist policies before. The government introduced a $3,000 lump sum baby bonus in 2004, which correlated with an increase of 15,000 births in subsequent years. When the bonus rose to $4,000 in 2006, births increased by nearly 19,000 in 2007. A further increase to $5,000 in 2008, however, produced no dramatic rise. Birth rates plateaued with modest increases until peaking in 2012 at approximately 315,000 births—the highest point visible on the graph. In 2014, citing sustainability concerns, the government replaced the $5,000 lump sum with a reduced payment of $2,000-$3,000 distributed over 13 weeks. Since then, birth rates have been in gradual decline, reaching approximately 290,000 by 2024."),
-        html.P("The timing is notable: birth rates peaked while the bonus was at its highest and declined after it was reduced. However, correlation does not establish causation. The diminishing returns from successive bonus increases—particularly the lack of any spike after the 2008 increase to $5,000—indicate that cash payments alone cannot overcome deeper structural barriers to having children. Housing costs, childcare affordability, and career disruption are likely stronger determinants of family size decisions than one-off payments."),
+        html.P("Australia has experimented with pronatalist policies before. The government introduced a $3,000 lump "
+               "sum baby bonus in 2004, which correlated with an increase of 15,000 births in subsequent years. "
+               "When the bonus rose to $4,000 in 2006, births increased by nearly 19,000 in 2007. A further increase "
+               "to $5,000 in 2008, however, produced no dramatic rise. Birth rates plateaued with modest increases "
+               "until peaking in 2012 at approximately 315,000 births—the highest point visible on the graph. In 2014, "
+               "citing sustainability concerns, the government replaced the $5,000 lump sum with a reduced payment of "
+               "$2,000-$3,000 distributed over 13 weeks. Since then, birth rates have been in gradual decline, reaching "
+               "approximately 290,000 by 2024."),
+        html.P("The timing is notable: birth rates peaked while the bonus was at its highest and declined after it "
+               "was reduced. However, correlation does not establish causation. The diminishing returns from successive "
+               "bonus increases—particularly the lack of any spike after the 2008 increase to $5,000—indicate that "
+               "cash payments alone cannot overcome deeper structural barriers to having children. Housing costs, "
+               "childcare affordability, and career disruption are likely stronger determinants of family size "
+               "decisions than one-off payments."),
 
         html.H3("A Global Pattern"),
         html.P("Australia's fertility decline is not unique. South Korea, Singapore, and Japan have all implemented aggressive pronatalist policies—including cash bonuses, subsidised childcare, and housing assistance—yet none has succeeded in reversing fertility decline to replacement rate (2.1 births per woman). This global pattern suggests that declining birth rates in developed economies are driven by structural shifts in how people live and work, not simply by insufficient financial incentives."),
 
         html.H3("What Lies Ahead"),
-        html.P(["The projections carry substantial uncertainty, particularly beyond 2030, as shown by the widening confidence intervals. However, even the most optimistic scenarios show continued divergence between births and deaths. ", html.B("The evidence suggests that immigration itself has minimal impact on birth rates."), " Unless the government addresses fundamental cost-of-living and housing affordability issues—the structural factors that likely explain why larger baby bonuses lost effectiveness—declining fertility will persist regardless of migration levels."]),
-        html.P("Realistically, Australia will likely need both strategies simultaneously: pronatalist policies that address the economic barriers to family formation, and sustained immigration to fill the gap that policy alone cannot close. No developed country has solved this problem with one approach alone. Current trends suggest the government has leaned heavily toward immigration, but the political sustainability of high immigration levels remains uncertain. Without a dual strategy, Australia faces the full force of the Silver Tsunami in the 2040s."),
+        html.P(["The projections carry substantial uncertainty, particularly beyond 2030, as shown by the widening "
+                "confidence intervals. However, even the most optimistic scenarios show continued divergence between "
+                "births and deaths. ", html.B("The evidence suggests that immigration itself has minimal impact on birth rates."),
+                " Unless the government addresses fundamental cost-of-living and housing affordability issues—the "
+                "structural factors that likely explain why larger baby bonuses lost effectiveness—declining fertility "
+                "will persist regardless of migration levels."]),
+        html.P("Realistically, Australia will likely need both strategies simultaneously: pronatalist policies that "
+               "address the economic barriers to family formation, and sustained immigration to fill the gap that "
+               "policy alone cannot close. No developed country has solved this problem with one approach alone. "
+               "Current trends suggest the government has leaned heavily toward immigration, but the political "
+               "sustainability of high immigration levels remains uncertain. Without a dual strategy, Australia faces "
+               "the full force of the Silver Tsunami in the 2040s."),
         html.P(["Source code: ", html.A("GitHub repository", href="https://github.com/karieng-com-au/australia-analytics")]),
     ])
 
