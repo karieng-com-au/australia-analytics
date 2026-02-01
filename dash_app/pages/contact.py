@@ -9,12 +9,22 @@ layout = html.Div([
     html.H5("Data/Analytics Engineer", className="text-muted"),
     html.P(
         "Thanks for stopping by! I'd love to hear from you — whether it's about "
-        "a potential collaboration, a question, or just to say hello. "
+        "a job opportunity, potential collaboration, a question, or just to say hello. "
         "Fill out the form below and I'll get back to you as soon as I can.",
         className="mt-3 mb-4",
     ),
     html.Hr(),
     dbc.Form([
+        dbc.Row([
+            dbc.Col([
+                dbc.Label("Full Name", html_for="contact-name"),
+                dbc.Input(id="contact-name", type="text", placeholder="Your Name"),
+            ], md=6),
+            dbc.Col([
+                dbc.Label("Company", html_for="contact-company"),
+                dbc.Input(id="contact-company", type="text", placeholder="Your Company's Name"),
+            ], md=6),
+            ], className="mb-3"),
         dbc.Row([
             dbc.Col([
                 dbc.Label("Email address", html_for="contact-email"),
@@ -44,8 +54,14 @@ layout = html.Div([
 
 clientside_callback(
     """
-    function(n_clicks, email, phone, subject, message) {
+    function(n_clicks, name, company, email, phone, subject, message) {
         if (!n_clicks) return "";
+        if (name && name.length > 100) {
+            return "Name must be 100 characters or less.";
+        }
+        if (company && company.length > 100) {
+            return "Company must be 100 characters or less.";
+        }
         if (!email || !subject || !message) {
             return "Please fill in at least your email, subject, and message.";
         }
@@ -65,6 +81,8 @@ clientside_callback(
         }
         window._lastContactSent = Date.now();
         emailjs.send("service_msc0orv", "template_laj5hrw", {
+            name: name,
+            company: company,
             from_email: email,
             phone: phone || "Not provided",
             subject: subject.substring(0, 200),
@@ -73,6 +91,8 @@ clientside_callback(
             function() {
                 document.getElementById("contact-status").innerText = "Message sent successfully! I'll be in touch soon.";
                 document.getElementById("contact-status").className = "mt-3 text-success fw-bold";
+                document.getElementById("contact-name").value = "";
+                document.getElementById("contact-company").value = "";
                 document.getElementById("contact-email").value = "";
                 document.getElementById("contact-phone").value = "";
                 document.getElementById("contact-subject").value = "";
@@ -88,6 +108,8 @@ clientside_callback(
     """,
     Output("contact-status", "children"),
     Input("contact-submit", "n_clicks"),
+    State("contact-name", "value"),
+    State("contact-company", "value"),
     State("contact-email", "value"),
     State("contact-phone", "value"),
     State("contact-subject", "value"),

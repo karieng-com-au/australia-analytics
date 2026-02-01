@@ -131,7 +131,8 @@ def layout():
         exploration(),
         first_preference_result(first_preferences),
         analysis(),
-        lollipop_charts_election_result(election_result_summary)
+        lollipop_charts_election_result(election_result_summary),
+        html.P(["Source code: ", html.A("GitHub repository", href="https://github.com/karieng-com-au/australia-analytics")]),
     ])
 
 
