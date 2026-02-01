@@ -49,11 +49,26 @@ clientside_callback(
         if (!email || !subject || !message) {
             return "Please fill in at least your email, subject, and message.";
         }
+        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return "Please enter a valid email address.";
+        }
+        if (subject.length > 200) {
+            return "Subject must be 200 characters or less.";
+        }
+        if (message.length > 5000) {
+            return "Message must be 5000 characters or less.";
+        }
+        var lastSent = window._lastContactSent || 0;
+        if (Date.now() - lastSent < 30000) {
+            return "Please wait 30 seconds before sending another message.";
+        }
+        window._lastContactSent = Date.now();
         emailjs.send("service_msc0orv", "template_laj5hrw", {
             from_email: email,
             phone: phone || "Not provided",
-            subject: subject,
-            message: message
+            subject: subject.substring(0, 200),
+            message: message.substring(0, 5000)
         }).then(
             function() {
                 document.getElementById("contact-status").innerText = "Message sent successfully! I'll be in touch soon.";

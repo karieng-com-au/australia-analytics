@@ -69,8 +69,10 @@ def load_geojson():
     if os.path.exists(local_path):
         with open(local_path) as f:
             return json.load(f)
-    bucket_name = os.getenv("GCS_BUCKET", "toke-analytics-data")
-    blob_path = os.getenv("GCS_GEOJSON_PATH", "election_map/cec_districts_map.geojson")
+    bucket_name = os.getenv("GCS_BUCKET")
+    blob_path = os.getenv("GCS_GEOJSON_PATH")
+    if not bucket_name or not blob_path:
+        raise RuntimeError("GCS_BUCKET and GCS_GEOJSON_PATH environment variables must be set")
     blob = storage.Client(credentials=credentials, project=project_id).bucket(bucket_name).blob(blob_path)
     return json.loads(blob.download_as_text())
 
